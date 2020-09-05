@@ -3,12 +3,20 @@ var getUserRepos = function(user) {
     // Format the GitHub API URL for the fetch function
     var apiUrl = "https://api.github.com/users/" + user + "/repos";
 
-    // Make a request to the URL
+    // Make a request to the URL.  If the reponse is okay, the data is displayed, otherwise, the error is displayed in an alert
     fetch(apiUrl).then(function(response) {
-        response.json().then(function(data) {
-            displayRepos(data, user);
-        });
-});
+        if (response.ok) {
+            response.json().then(function(data) {
+                displayRepos(data, user);
+            });           
+        } else {
+            alert("Error: " + response.statusText);
+        }
+    })
+    .catch(function(error) {
+        // chain an error catch onto the .then() for network errors
+        alert("Unable to connect to GitHub");
+    })
 };
 
 // Variables for user name search form
@@ -41,6 +49,11 @@ var displayRepos = function(repos, searchTerm) {
     repoContainerEl.textContent = "";
     // add the user name that was entered to the heading
     repoSearchTerm.textContent = searchTerm;
+    // check if the API returned any repos; if not, display a message
+    if (repos.length === 0) {
+        repoContainerEl.textContent = "No repositories found.";
+        return;
+    }
     // loop over the repos
     for (var i=0; i < repos.length; i++) {
         // format the repo name from the JSON data object
