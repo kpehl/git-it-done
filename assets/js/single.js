@@ -1,5 +1,9 @@
-// Define the Issues container element 
+// Define the issues container element 
 var issueContainerEl = document.querySelector("#issues-container");
+// Define an element for a pagination limit warning
+var limitWarningEl = document.querySelector("#limit-warning");
+// Temporary hard-coded repo
+repo = "facebook/react";
 
 // Function to get the issues for a given repo from GitHub
 var getRepoIssues = function(repo) {
@@ -15,6 +19,10 @@ var getRepoIssues = function(repo) {
                 // and display the data
                 .then(function(data) {
                     displayIssues(data);
+                    // check to see if there are more than 30 results, i.e. check for paginated issues
+                    if (response.headers.get("Link")) {
+                        displayWarning(repo);
+                    }
                 });
             // otherwise, display an error message
             } else {
@@ -56,4 +64,17 @@ var displayIssues = function(issues) {
     }
 };
 
-getRepoIssues("facebook/react");
+// Function to display a pagination warning if there are more than 30 issues
+var displayWarning = function(repo) {
+    // add text to the element defined at the beginning of the single.js file
+    limitWarningEl.textContent = "To see more than 30 issues, visit: "
+    // create a link to the repo issue page
+    var linkEl = document.createElement("a");
+    linkEl.textContent = "More Issues on GitHub.com";
+    linkEl.setAttribute("href", "https://github.com/" + repo + "/issues")
+    linkEl.setAttribute("target", "_blank");
+    // append the link to the warning container
+    limitWarningEl.appendChild(linkEl);
+};
+
+getRepoIssues(repo);
