@@ -19,6 +19,33 @@ var getUserRepos = function(user) {
     })
 };
 
+// A variable to define a language element for the featured repo search
+var languageButtonsEl = document.querySelector("#language-buttons")
+
+// A function to handle the language button clicks
+var buttonClickHandler = function(event) {
+    var language = event.target.getAttribute("data-language");
+    // if a language is selected, clear out old content and get the featured repos (asynchonous event, so order doesn't matter in the if)
+    if (language) {
+        getFeaturedRepos(language);
+        repoContainerEl.textContent = "";
+    }
+};
+
+// A function to retrieve featured repos for a specified language
+var getFeaturedRepos = function(language) {
+    var apiUrl = "https://api.github.com/search/repositories?q=" + language + "+is:featured&sort=help-wanted-issues";
+    fetch(apiUrl).then(function(response) {
+        if (response.ok) {
+            response.json().then(function (data) {
+                displayRepos(data.items, language);
+            })
+        } else {
+            alert("Error: " + response.statusText);
+        }
+    })
+};
+
 // Variables for user name search form
 var userFormEl = document.querySelector("#user-form");
 var nameInputEl = document.querySelector("#username");
@@ -85,3 +112,6 @@ var displayRepos = function(repos, searchTerm) {
 
 // Event listener for form submittal
 userFormEl.addEventListener("submit", formSubmitHandler);
+
+// Event listener for the language select button search
+languageButtonsEl.addEventListener("click", buttonClickHandler);

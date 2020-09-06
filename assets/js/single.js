@@ -17,7 +17,7 @@ var getRepoName = function() {
         repoNameEl.textContent = repoName;
     // otherwise, redirect back to index.html
     } else {
-        // alert("A repo name was not provided. Sending you back to home page.")
+        alert("A repo name was not provided. Sending you back to home page.")
         document.location.replace("./index.html");
     }
 };
@@ -46,7 +46,7 @@ var getRepoIssues = function(repo) {
                 });
             // otherwise, redirect the user to index.html
             } else {
-                // alert("There was a problem with your request. Sending you back to home page.")
+                alert("There was a problem with your request. Sending you back to home page.")
                 document.location.replace("./index.html");
             }
         });
