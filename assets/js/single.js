@@ -9,11 +9,18 @@ var repoNameEl = document.querySelector("#repo-name")
 var getRepoName = function() {
     // Variable for the query string as taken from the index.html link
     var queryString = document.location.search;
-    // Variable for repoName as in homepage.js
+    // Variable for repoName as in homepage.js by splitting the query and taking the portion after the =
     var repoName = queryString.split("=")[1];
-    getRepoIssues(repoName);
-    repoNameEl.textContent = repoName;
-}
+    // If a name is supplied, get the issues and populate the page title
+    if (repoName) {
+        getRepoIssues(repoName);
+        repoNameEl.textContent = repoName;
+    // otherwise, redirect back to index.html
+    } else {
+        // alert("A repo name was not provided. Sending you back to home page.")
+        document.location.replace("./index.html");
+    }
+};
 
 
 
@@ -37,9 +44,10 @@ var getRepoIssues = function(repo) {
                         displayWarning(repo);
                     }
                 });
-            // otherwise, display an error message
+            // otherwise, redirect the user to index.html
             } else {
-                alert("There was a problem with your request!");
+                // alert("There was a problem with your request. Sending you back to home page.")
+                document.location.replace("./index.html");
             }
         });
 };
