@@ -58,9 +58,10 @@ var displayRepos = function(repos, searchTerm) {
     for (var i=0; i < repos.length; i++) {
         // format the repo name from the JSON data object
         var repoName = repos[i].owner.login + "/" + repos[i].name;
-        // create a container for each repo
-        var repoEl = document.createElement("div");
+        // create a link container for each repo
+        var repoEl = document.createElement("a");
         repoEl.classList = "list-item flex-row justify-space-between align-center";
+        repoEl.setAttribute("href", "./single-repo.html?repo=" + repoName);
         // create a span element to hold the repository name and add the name from imported data
         var titleEl = document.createElement("span");
         titleEl.textContent = repoName;

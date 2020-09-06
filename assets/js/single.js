@@ -2,8 +2,21 @@
 var issueContainerEl = document.querySelector("#issues-container");
 // Define an element for a pagination limit warning
 var limitWarningEl = document.querySelector("#limit-warning");
-// Temporary hard-coded repo
-repo = "facebook/react";
+// Define an element for the page title repo name section
+var repoNameEl = document.querySelector("#repo-name")
+
+// Function to get the repo name
+var getRepoName = function() {
+    // Variable for the query string as taken from the index.html link
+    var queryString = document.location.search;
+    // Variable for repoName as in homepage.js
+    var repoName = queryString.split("=")[1];
+    getRepoIssues(repoName);
+    repoNameEl.textContent = repoName;
+}
+
+
+
 
 // Function to get the issues for a given repo from GitHub
 var getRepoIssues = function(repo) {
@@ -77,4 +90,4 @@ var displayWarning = function(repo) {
     limitWarningEl.appendChild(linkEl);
 };
 
-getRepoIssues(repo);
+getRepoName();
